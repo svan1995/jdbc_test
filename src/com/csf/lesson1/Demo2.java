@@ -1,9 +1,8 @@
 package com.csf.lesson1;
 
-import javax.sql.DataSource;
 import java.sql.*;
 
-public class Demo1 {
+public class Demo2 {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
 
@@ -17,18 +16,15 @@ public class Demo1 {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Statement statement = connection.createStatement();
 
-        String sql = "select * from student";
-        ResultSet resultSet = statement.executeQuery(sql);
-        while (resultSet.next()){
-            System.out.println("姓名: "+resultSet.getObject("studentname"));
-        }
+        String sql = "insert into grade(`gradename`) values(?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, "研一");
+        int i = preparedStatement.executeUpdate();
+        if (i > 0)
+            System.out.println("success");
 
-        resultSet.close();
-        statement.close();
         connection.close();
-
 
     }
 }
